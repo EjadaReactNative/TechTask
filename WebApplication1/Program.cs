@@ -1,5 +1,9 @@
 
-namespace WebApplication1
+using Microsoft.EntityFrameworkCore;
+using TechnicalTask.Data;
+using TechnicalTask.Services;
+
+namespace TechnicalTask
 {
     public class Program
     {
@@ -7,27 +11,27 @@ namespace WebApplication1
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Register services
+            builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("AuthDb"));
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddSingleton<IAuthService, AuthService>();
 
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Swagger
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
         }
     }
