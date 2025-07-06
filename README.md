@@ -31,4 +31,8 @@
    {
   "phoneNumber": "0987654321",
   "otp": "Use the OTP recieved"  //
+
   }
+
+  4. To test the swagger use the following link
+     http://localhost:{PortNumber}/swagger/index.html
